@@ -1,48 +1,67 @@
 import { Plus } from "@phosphor-icons/react";
 import Button from "../../components/Button";
-import Movie from "../../components/Movie";
+import Movie from "../../components/Movies";
 import * as S from "./style";
+import { api } from "../../config/api";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+export interface IMovie {
+  created_at: string;
+  description: string;
+  id: number;
+  tags_names: string;
+  rating: number;
+  title: string;
+  updated_at: string;
+  user_id: number;
+}
 
 const Home = () => {
+  const [movies, setmovies] = useState<IMovie[] | undefined>(undefined);
+  const data = async () => {
+    try {
+      const response = await api.get("movies");
+      setmovies(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    data();
+  }, []);
+
   return (
     <S.ContainerHome>
       <S.ContainerTitle>
         <h1>Meus filmes</h1>
-        <Button
-          background="#FF859B"
-          width="207px"
-          height="48px"
-          icon={<Plus size={20} color="#000" weight="thin" />}
-        >
-          Adicionar
-        </Button>
+        <Link to="/newmovie">
+          <Button
+            background="#FF859B"
+            width="207px"
+            height="48px"
+            icon={<Plus size={20} color="#000" weight="thin" />}
+          >
+            Adicionar
+          </Button>
+        </Link>
       </S.ContainerTitle>
 
       <S.ContainerMovies>
-        <Movie
-          title="teste"
-          descrition={`Pragas nas colheitas fizeram a civilização humana regredir para uma sociedade agrária em futuro de data desconhecida. Cooper, ex-piloto da NASA, tem uma fazenda com sua família. Murphy, a filha de dez anos de Cooper, acredita que seu quarto está assombrado por um fantasma que tenta se .`}
-          rating={5}
-          tags="teste"
-        />
-        <Movie
-          title="teste"
-          descrition={`Pragas nas colheitas fizeram a civilização humana regredir para uma sociedade agrária em futuro de data desconhecida. Cooper, ex-piloto da NASA, tem uma fazenda com sua família. Murphy, a filha de dez anos de Cooper, acredita que seu quarto está assombrado por um fantasma que tenta se comunicar com ela. Pai e filha descobrem que o "fantasma" é uma inteligência desconhecida que está enviando mensagens codificadas através de radiação gravitacional, deixando coordenadas em binário que os levam até uma instalação secreta da NASA liderada pelo professor John Brand. O cientista revela que um buraco de minhoca foi aberto perto de Saturno e que ele leva a planetas que podem oferecer condições de sobrevivência para a espécie humana. As "missões Lázaro" enviadas anos antes identificaram três planetas potencialmente habitáveis orbitando o buraco negro Gargântua: Miller, Edmunds e Mann – nomeados em homenagem aos astronautas que os pesquisaram. Brand recruta Cooper para pilotar a nave espacial Endurance e recuperar os dados dos astronautas; se um dos planetas se mostrar habitável, a humanidade irá seguir para ele na instalação da NASA, que é na realidade uma enorme estação espacial. A partida de Cooper devasta Murphy.`}
-          rating={5}
-          tags="teste"
-        />
-        <Movie
-          title="teste"
-          descrition={`Pragas nas colheitas fizeram a civilização humana regredir para uma sociedade agrária em futuro de data desconhecida. Cooper, ex-piloto da NASA, tem uma fazenda com sua família. Murphy, a filha de dez anos de Cooper, acredita que seu quarto está assombrado por um fantasma que tenta se comunicar com ela. Pai e filha descobrem que o "fantasma" é uma inteligência desconhecida que está enviando mensagens codificadas através de radiação gravitacional, deixando coordenadas em binário que os levam até uma instalação secreta da NASA liderada pelo professor John Brand. O cientista revela que um buraco de minhoca foi aberto perto de Saturno e que ele leva a planetas que podem oferecer condições de sobrevivência para a espécie humana. As "missões Lázaro" enviadas anos antes identificaram três planetas potencialmente habitáveis orbitando o buraco negro Gargântua: Miller, Edmunds e Mann – nomeados em homenagem aos astronautas que os pesquisaram. Brand recruta Cooper para pilotar a nave espacial Endurance e recuperar os dados dos astronautas; se um dos planetas se mostrar habitável, a humanidade irá seguir para ele na instalação da NASA, que é na realidade uma enorme estação espacial. A partida de Cooper devasta Murphy.`}
-          rating={5}
-          tags="teste"
-        />
-        <Movie
-          title="teste"
-          descrition={`Pragas nas colheitas fizeram a civilização humana regredir para uma sociedade agrária em futuro de data desconhecida. Cooper, ex-piloto da NASA, tem uma fazenda com sua família. Murphy, a filha de dez anos de Cooper, acredita que seu quarto está assombrado por um fantasma que tenta se comunicar com ela. Pai e filha descobrem que o "fantasma" é uma inteligência desconhecida que está enviando mensagens codificadas através de radiação gravitacional, deixando coordenadas em binário que os levam até uma instalação secreta da NASA liderada pelo professor John Brand. O cientista revela que um buraco de minhoca foi aberto perto de Saturno e que ele leva a planetas que podem oferecer condições de sobrevivência para a espécie humana. As "missões Lázaro" enviadas anos antes identificaram três planetas potencialmente habitáveis orbitando o buraco negro Gargântua: Miller, Edmunds e Mann – nomeados em homenagem aos astronautas que os pesquisaram. Brand recruta Cooper para pilotar a nave espacial Endurance e recuperar os dados dos astronautas; se um dos planetas se mostrar habitável, a humanidade irá seguir para ele na instalação da NASA, que é na realidade uma enorme estação espacial. A partida de Cooper devasta Murphy.`}
-          rating={5}
-          tags="teste"
-        />
+        {movies &&
+          movies.map((movie) => {
+            return (
+              <Link key={movie.id} to={`/movie/${movie.id}`}>
+                <Movie
+                  title={movie.title}
+                  descrition={movie.description}
+                  rating={movie.rating}
+                  tags={movie.tags_names}
+                />
+              </Link>
+            );
+          })}
       </S.ContainerMovies>
     </S.ContainerHome>
   );

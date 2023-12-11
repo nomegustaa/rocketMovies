@@ -1,6 +1,18 @@
+import { Link } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 import Input from "../Input";
 import * as S from "./style";
 const Header = () => {
+  const { user, logout } = useAuth();
+  const curretnPath = window.location.pathname;
+  if (
+    curretnPath === "/" ||
+    curretnPath === "/signUp" ||
+    curretnPath === "/profile"
+  ) {
+    return null;
+  }
+
   return (
     <S.ContainerHader>
       <h1>RocketMovies</h1>
@@ -10,8 +22,10 @@ const Header = () => {
 
       <S.ContainerUser>
         <S.User>
-          <span>Nome do usuário</span>
-          <span>Sair</span>
+          <Link to="/profile">
+            <S.NameUser>{user?.name}</S.NameUser>
+          </Link>
+          <S.Logout onClick={logout}>Sair</S.Logout>
         </S.User>
 
         <S.AvatarUser>{/* <Input /> */}</S.AvatarUser>

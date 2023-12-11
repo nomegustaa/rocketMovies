@@ -16,4 +16,7 @@ export const GlobalStyle = createGlobalStyle`
   button{
     font-family: 'Roboto', sans-serif, Helvetica;
   }
+  a{
+    text-decoration: none;
+  }
 `;

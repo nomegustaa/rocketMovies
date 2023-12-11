@@ -5,4 +5,5 @@ export interface IButton extends React.ComponentProps<"div"> {
   width: string;
   height: string;
   icon?: ReactNode;
+  isLoading?: boolean;
 }
