@@ -55,13 +55,9 @@ export const UploadButton = styled.label`
   justify-content: center;
   width: 186px;
   height: 186px;
-  /* border: 2px dashed #ccc)}; */
   border-radius: 50%;
   cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
+  background-color: #ccc;
 `;
 
 export const ContainerInput = styled.div`

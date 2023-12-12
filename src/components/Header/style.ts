@@ -12,12 +12,23 @@ export const ContainerHader = styled.div`
   }
 `;
 
-export const AvatarUser = styled.div`
+export const notAvatarUser = styled.div`
   height: 56px;
   width: 56px;
   background-color: #c5c5c5;
   border-radius: 1px solid #999591;
   border-radius: 100%;
+`;
+export const AvatarUser = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  cursor: pointer;
 `;
 
 export const ContainerUser = styled.div`
@@ -33,6 +44,13 @@ export const User = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+`;
+
+export const UploadImage = styled.img`
+  border-radius: 50%;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 `;
 
 export const NameUser = styled.span`

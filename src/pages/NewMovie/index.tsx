@@ -61,7 +61,7 @@ const NewMovie = () => {
 
   return (
     <S.ContainerNewMovie>
-      <BackToHome />
+      <BackToHome text="Voltar" route="home" />
       <h1>Novo Filme</h1>
       <S.ContainerInput>
         <div>

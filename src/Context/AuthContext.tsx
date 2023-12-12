@@ -14,10 +14,13 @@ interface Auth {
 
 interface AuthContextProps {
   signIn: (email: string, password: string) => void;
+  signUp: (name: string, email: string, password: string) => void;
   logout(): void;
+  getBase64(): void;
   error: boolean;
   loading: boolean;
   user: User | null;
+  avatar: string | null;
 }
 
 interface User {
@@ -38,6 +41,7 @@ export const Auth = ({ children }: Auth) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -53,7 +57,6 @@ export const Auth = ({ children }: Auth) => {
           Authorization: token,
         },
       });
-      console.log(response);
       setUser(response.data.user);
     } catch (e) {
       logout();
@@ -81,6 +84,45 @@ export const Auth = ({ children }: Auth) => {
     }
   };
 
+  const signUp = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<void> => {
+    setLoading(true);
+
+    try {
+      const response = await api.post("/createUser", {
+        nameUser: name,
+        emailUser: email,
+        passwordUser: password,
+      });
+      const token = response.data.token;
+      sessionStorage.setItem("SESSION_ID", token);
+      checkToken();
+      navigate("/home");
+    } catch (err) {
+      sessionStorage.removeItem("SESSION_ID");
+      setError(true);
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getBase64 = async (): Promise<void> => {
+    setLoading(true);
+
+    try {
+      const response = await api.get("getavatar");
+      setAvatar(response.data.avatar);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const token = sessionStorage.getItem("SESSION_ID");
     const url = window.location.pathname;
@@ -98,6 +140,9 @@ export const Auth = ({ children }: Auth) => {
       value={{
         signIn,
         logout,
+        signUp,
+        getBase64,
+        avatar: avatar,
         error: error,
         loading: loading,
         user: user,

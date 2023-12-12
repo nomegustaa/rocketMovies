@@ -3,7 +3,7 @@ import { useAuth } from "../../Context/AuthContext";
 import Input from "../Input";
 import * as S from "./style";
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, avatar } = useAuth();
   const curretnPath = window.location.pathname;
   if (
     curretnPath === "/" ||
@@ -28,7 +28,13 @@ const Header = () => {
           <S.Logout onClick={logout}>Sair</S.Logout>
         </S.User>
 
-        <S.AvatarUser>{/* <Input /> */}</S.AvatarUser>
+        {avatar ? (
+          <S.AvatarUser>
+            <S.UploadImage src={`data:image/jpeg;base64,${avatar}`} />
+          </S.AvatarUser>
+        ) : (
+          <S.notAvatarUser />
+        )}
       </S.ContainerUser>
     </S.ContainerHader>
   );

@@ -29,7 +29,7 @@ const Movie = () => {
 
   return (
     <S.ContainerNewMovie>
-      <BackToHome />
+      <BackToHome text="Voltar" route="home" />
 
       {movie &&
         movie.map((movieById) => {
